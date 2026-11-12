@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Tests
+.pytest_cache/
+
+# Local environments
+.venv/
+venv/
+
+# Generated datasets
+data/*.csv
+data/*.parquet
+
+# Local configuration
+.env
+
+# macOS
+.DS_Store
