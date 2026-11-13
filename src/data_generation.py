@@ -1,16 +1,39 @@
 
 """
-Synthetic data generation for lung-cancer risk experiments.
+Synthetic data generation for lung cancer risk prediction.
 
-The legacy generator reconstructs the implementation found
-after the publication of the earlier research article.
+Generators
+----------
+1. generate_article_legacy(n, seed)
+   - Reconstructs the generator from the previous study.
+   - Preserves the recovered formula and data inconsistencies.
+   - Includes an artificial age-smoking interaction (+1.2 logit).
 
-It intentionally preserves known inconsistencies.
-Do not use it as the corrected baseline generator.
+2. generate_baseline(n, seed)
+   - Generates logically consistent smoking histories.
+   - Uses the published PLCOm2012 risk formula.
+   - Does not introduce additional risk interactions.
+
+Output
+------
+Both generators return a DataFrame containing:
+- Patient features (X).
+- True risk probabilities (risk) and intermediate logits.
+- Binary outcomes (y) sampled from Bernoulli(risk).
+
+Notes
+-----
+- The legacy implementation is reconstructed, not definitively verified.
+- Synthetic data are not clinically validated.
+- Risk probabilities and logits must not be used as ML features.
 """
+
 
 import numpy as np
 import pandas as pd
+
+from scipy.special import expit
+from .plco import plco_logit
 
 
 def _article_legacy_logit(row):
@@ -126,3 +149,107 @@ def generate_article_legacy(n: int, seed: int) -> pd.DataFrame:
     df["y"] = rng.binomial(1, df["risk"])
 
     return df
+
+
+def generate_baseline(n: int, seed: int) -> pd.DataFrame:
+    """
+    Generate synthetic patients with consistent smoking histories.
+
+    The target is sampled from the published PLCOm2012 risk:
+        y ~ Bernoulli(PLCOm2012(X))
+
+    Unlike the legacy generator, no artificial +1.2
+    interaction is added.
+    """
+    if n <= 0:
+        raise ValueError("n must be positive")
+
+    rng = np.random.default_rng(seed)
+
+    # 1. Age and current-smoking status.
+    age = rng.integers(55, 75, size=n)
+
+    current = rng.choice(
+        [0, 1], size=n, p=[0.60, 0.40]
+    )
+
+    # 2. Years since quitting: zero for current smokers.
+    quit_years = np.zeros(n, dtype=int)
+    former = current == 0
+
+    quit_years[former] = np.clip(
+        rng.normal(
+            10, 5, size=former.sum()
+        ).astype(int),
+        1, 30
+    )
+
+    # 3. Smoking duration must be compatible with age.
+    # Assume smoking cannot start before age 15.
+    sampled_years = np.clip(
+        rng.normal(30, 10, size=n).astype(int),
+        1, 60
+    )
+
+    max_years = age - 15 - quit_years
+    smoking_years = np.minimum(
+        sampled_years, max_years
+    )
+
+    # 4. Remaining synthetic characteristics.
+    df = pd.DataFrame({
+        "age": age,
+        "bmi": np.clip(
+            rng.normal(27, 5, n), 15, 50
+        ),
+        "education": rng.choice(
+            [1, 2, 3, 4, 5, 6],
+            n,
+            p=[0.05, 0.20, 0.25, 0.30, 0.15, 0.05],
+        ),
+        "copd": rng.choice(
+            [0, 1], n, p=[0.85, 0.15]
+        ),
+        "personal_cancer": rng.choice(
+            [0, 1], n, p=[0.92, 0.08]
+        ),
+        "family_lung_cancer": rng.choice(
+            [0, 1], n, p=[0.88, 0.12]
+        ),
+        "is_current_smoker": current,
+        "cigs_per_day": np.clip(
+            rng.exponential(10, n), 1, 60
+        ).astype(int),
+        "smoking_years": smoking_years,
+        "quit_years": quit_years,
+        "race": rng.choice(
+            [
+                "White",
+                "Black",
+                "Hispanic",
+                "Asian",
+                "Native Hawaiian or Pacific Islander",
+            ],
+            n,
+            p=[0.70, 0.12, 0.09, 0.07, 0.02],
+        ),
+    })
+
+    # 5. Published PLCOm2012 risk mechanism.
+    df["logit_base"] = df.apply(
+        plco_logit, axis=1
+    )
+
+    df["logit_true"] = df["logit_base"]
+
+    df["risk"] = expit(
+        df["logit_true"].to_numpy()
+    )
+
+    # 6. Binary target.
+    df["y"] = rng.binomial(
+        1, df["risk"].to_numpy()
+    )
+
+    return df
+
