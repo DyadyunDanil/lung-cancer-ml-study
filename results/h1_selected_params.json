@@ -1,0 +1,44 @@
+{
+  "n": 50000,
+  "data_seed": 314159,
+  "split_seed": 271828,
+  "model_seed": 2026,
+  "cv_seed": 1729,
+  "cv_folds": 3,
+  "search_iterations_per_model": 6,
+  "selection_metric": "standardized_partial_roc_auc_fpr_le_0.10",
+  "min_validation_specificity": 0.9,
+  "selected_parameters": {
+    "Logistic Regression": {
+      "model__C": 3.0
+    },
+    "Random Forest": {
+      "model__n_estimators": 120,
+      "model__min_samples_leaf": 15,
+      "model__max_features": "sqrt",
+      "model__max_depth": null
+    },
+    "XGBoost": {
+      "model__subsample": 1.0,
+      "model__n_estimators": 100,
+      "model__min_child_weight": 1,
+      "model__max_depth": 3,
+      "model__learning_rate": 0.02,
+      "model__colsample_bytree": 1.0
+    },
+    "MLP": {
+      "model__learning_rate_init": 0.001,
+      "model__hidden_layer_sizes": [
+        48
+      ],
+      "model__alpha": 0.1
+    }
+  },
+  "versions": {
+    "python": "3.11.11",
+    "numpy": "2.4.6",
+    "pandas": "3.1.1",
+    "scikit_learn": "1.9.1",
+    "xgboost": "3.2.0"
+  }
+}
