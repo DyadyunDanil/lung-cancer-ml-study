@@ -21,3 +21,4 @@ data/*.parquet
 
 # macOS
 .DS_Store
+anaconda_projects/
