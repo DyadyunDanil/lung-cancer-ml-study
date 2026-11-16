@@ -6,9 +6,9 @@
 
 Tammemägi M. C., Katki H. A., Hocking W. G., et al. (2013). **Selection Criteria for Lung-Cancer Screening.** *New England Journal of Medicine*, 368(8), 728–736.
 
-DOI: https://doi.org/10.1056/NEJMoa1211776
+DOI: [https://doi.org/10.1056/NEJMoa1211776](https://doi.org/10.1056/NEJMoa1211776)
 
-Полный текст: https://pmc.ncbi.nlm.nih.gov/articles/PMC3929969/
+Полный текст: [https://pmc.ncbi.nlm.nih.gov/articles/PMC3929969/](https://pmc.ncbi.nlm.nih.gov/articles/PMC3929969/)
 
 **Использование в проекте:**
 
@@ -21,9 +21,9 @@ DOI: https://doi.org/10.1056/NEJMoa1211776
 
 resplab. **PLCOm2012 — R package for lung-cancer risk prediction.**
 
-GitHub: https://github.com/resplab/PLCOm2012
+GitHub: [https://github.com/resplab/PLCOm2012](https://github.com/resplab/PLCOm2012)
 
-Исходный код: https://rdrr.io/github/resplab/PLCOm2012/src/R/plcom2012.R
+Исходный код: [https://rdrr.io/github/resplab/PLCOm2012/src/R/plcom2012.R](https://rdrr.io/github/resplab/PLCOm2012/src/R/plcom2012.R)
 
 **Использование в проекте:**
 
@@ -37,9 +37,9 @@ GitHub: https://github.com/resplab/PLCOm2012
 
 Дядюн Д. Е., Гарафутдинов Р. В. (2026). **Сравнительный анализ моделей прогнозирования риска рака легких.** *Цифровые модели и решения*, 5(2), 5–18.
 
-DOI: https://doi.org/10.29141/2949-477X-2026-5-2-1
+DOI: [https://doi.org/10.29141/2949-477X-2026-5-2-1](https://doi.org/10.29141/2949-477X-2026-5-2-1)
 
-Статья: https://usue-journal.ru/ru/component/content/article/76-russkij-yazyk/tsmir/14/610-sravnitelnyj-analiz-modelej-prognozirovaniya-riska-raka-legkikh
+Статья: [https://usue-journal.ru/ru/component/content/article/76-russkij-yazyk/tsmir/14/610-sravnitelnyj-analiz-modelej-prognozirovaniya-riska-raka-legkikh](https://usue-journal.ru/ru/component/content/article/76-russkij-yazyk/tsmir/14/610-sravnitelnyj-analiz-modelej-prognozirovaniya-riska-raka-legkikh)
 
 **Использование в проекте:**
 
@@ -48,3 +48,49 @@ DOI: https://doi.org/10.29141/2949-477X-2026-5-2-1
 - Мотивация для исследования воспроизводимости, качества синтетических данных и устойчивости моделей.
 
 **Ограничение:** найденный код генерации с высокой вероятностью использовался в статье, но его идентичность окончательному историческому исходнику пока не доказана.
+
+## 4. Количественные зависимости риска от истории курения
+
+Remen T., Pintos J., Abrahamowicz M., Siemiatycki J. (2018). **Risk of lung cancer in relation to various metrics of smoking history: a case-control study in Montreal.** *BMC Cancer*, 18, статья 1275.
+
+DOI: [https://doi.org/10.1186/s12885-018-5144-5](https://doi.org/10.1186/s12885-018-5144-5)
+
+Полный текст: [https://pmc.ncbi.nlm.nih.gov/articles/PMC6299933/](https://pmc.ncbi.nlm.nih.gov/articles/PMC6299933/)
+
+**Использование в проекте:**
+
+- Сценарий **S1 (H2)**: из таблицы 4, модели 5 для мужчин взяты коэффициенты `0.072` для стажа курения (годы) и `0.64` для логарифма средней интенсивности курения (сигареты в день); оба коэффициента оценены совместно в одной модели.
+- Сценарий **S2 (H2)**: из таблицы 4, модели 4 для мужчин взят коэффициент `1.31` при комплексном индексе курения **CSI**.
+- Из описания CSI взяты математическая форма индекса, период полураспада `26 лет` и лаг `1 год` для мужчин (эти параметры заимствованы авторами у Leffondré et al.).
+
+**Ограничение:** оценки получены в исследовании случай–контроль и описывают логарифм отношения шансов, а не абсолютный шестилетний риск. В S1 и S2 мы заменяем отдельные компоненты PLCOm2012 и отдельно согласуем средний риск; это **наша адаптация**, а не точное воспроизведение всей модели Remen. В нашем генераторе не представлен пол пациента.
+
+## 5. Взаимодействия интенсивности, стажа и отказа от курения
+
+Vlaanderen J., Portengen L., Schüz J., et al. (2014). **Effect Modification of the Association of Cumulative Exposure and Cancer Risk by Intensity of Exposure and Time Since Exposure Cessation: A Flexible Method Applied to Cigarette Smoking and Lung Cancer in the SYNERGY Study.** *American Journal of Epidemiology*, 179(3), 290–298.
+
+DOI: [https://doi.org/10.1093/aje/kwt273](https://doi.org/10.1093/aje/kwt273)
+
+Полный текст: [https://pmc.ncbi.nlm.nih.gov/articles/PMC3895097/](https://pmc.ncbi.nlm.nih.gov/articles/PMC3895097/)
+
+**Использование в проекте:**
+
+- Научная мотивация сценария **S3 (H2)**: влияние накопленной табачной экспозиции на риск зависит от интенсивности курения и времени после прекращения курения.
+- Обоснование необходимости исследовать взаимодействия признаков, а не только сумму их отдельных вкладов.
+
+**Ограничение:** конкретные функции взаимодействий и коэффициенты `−0.18` и `−0.15` в нашем S3 заданы нами для синтетического эксперимента; они **не являются коэффициентами, опубликованными авторами SYNERGY**.
+
+## 6. Снижение избыточного риска после отказа от курения
+
+Fry J. S., Lee P. N., Forey B. A., Coombs K. J. (2013). **How rapidly does the excess risk of lung cancer decline following quitting smoking? A quantitative review using the negative exponential model.** *Regulatory Toxicology and Pharmacology*, 67(1), 13–26.
+
+DOI: [https://doi.org/10.1016/j.yrtph.2013.06.001](https://doi.org/10.1016/j.yrtph.2013.06.001)
+
+Аннотация: [https://pubmed.ncbi.nlm.nih.gov/23764305/](https://pubmed.ncbi.nlm.nih.gov/23764305/)
+
+**Использование в проекте:**
+
+- Дополнительное научное обоснование нелинейного снижения избыточного относительного риска рака лёгких после прекращения курения.
+- В метаанализе оценён период уменьшения избыточного риска вдвое: `9.93 года` (95% ДИ: 9.31–10.60).
+
+**Ограничение:** параметр `9.93 года` **не используется** в текущих формулах S0–S3. Его нельзя отождествлять с параметром `26 лет` в CSI: исследования и величины описывают разные модели риска.
