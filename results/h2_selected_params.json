@@ -1,0 +1,114 @@
+{
+  "n": 50000,
+  "quick_run": false,
+  "data_seed": 42,
+  "outcome_seed": 2026,
+  "split_seed": 123,
+  "cv_seed": 1729,
+  "model_seed": 2026,
+  "n_iter": 6,
+  "n_folds": 3,
+  "min_specificity_validation": 0.9,
+  "selected_params": {
+    "S0": {
+      "Logistic Regression": {},
+      "Random Forest": {
+        "model__n_estimators": 220,
+        "model__min_samples_leaf": 15,
+        "model__max_features": "sqrt",
+        "model__max_depth": 14
+      },
+      "XGBoost": {
+        "model__subsample": 1.0,
+        "model__n_estimators": 200,
+        "model__min_child_weight": 15,
+        "model__max_depth": 5,
+        "model__learning_rate": 0.02,
+        "model__colsample_bytree": 0.8
+      },
+      "MLP": {
+        "model__learning_rate_init": 0.001,
+        "model__hidden_layer_sizes": [
+          48
+        ],
+        "model__alpha": 0.1
+      }
+    },
+    "S1": {
+      "Logistic Regression": {
+        "model__C": 0.3
+      },
+      "Random Forest": {
+        "model__n_estimators": 220,
+        "model__min_samples_leaf": 15,
+        "model__max_features": "sqrt",
+        "model__max_depth": 8
+      },
+      "XGBoost": {
+        "model__subsample": 1.0,
+        "model__n_estimators": 320,
+        "model__min_child_weight": 5,
+        "model__max_depth": 3,
+        "model__learning_rate": 0.02,
+        "model__colsample_bytree": 1.0
+      },
+      "MLP": {
+        "model__learning_rate_init": 0.0005,
+        "model__hidden_layer_sizes": [
+          48
+        ],
+        "model__alpha": 0.1
+      }
+    },
+    "S2": {
+      "Logistic Regression": {},
+      "Random Forest": {
+        "model__n_estimators": 220,
+        "model__min_samples_leaf": 2,
+        "model__max_features": "sqrt",
+        "model__max_depth": 14
+      },
+      "XGBoost": {
+        "model__subsample": 1.0,
+        "model__n_estimators": 100,
+        "model__min_child_weight": 5,
+        "model__max_depth": 2,
+        "model__learning_rate": 0.1,
+        "model__colsample_bytree": 0.8
+      },
+      "MLP": {
+        "model__learning_rate_init": 0.003,
+        "model__hidden_layer_sizes": [
+          24
+        ],
+        "model__alpha": 0.1
+      }
+    },
+    "S3": {
+      "Logistic Regression": {
+        "model__C": 10.0
+      },
+      "Random Forest": {
+        "model__n_estimators": 220,
+        "model__min_samples_leaf": 6,
+        "model__max_features": "sqrt",
+        "model__max_depth": 8
+      },
+      "XGBoost": {
+        "model__subsample": 0.8,
+        "model__n_estimators": 100,
+        "model__min_child_weight": 15,
+        "model__max_depth": 3,
+        "model__learning_rate": 0.02,
+        "model__colsample_bytree": 1.0
+      },
+      "MLP": {
+        "model__learning_rate_init": 0.001,
+        "model__hidden_layer_sizes": [
+          48
+        ],
+        "model__alpha": 0.1
+      }
+    }
+  }
+}
